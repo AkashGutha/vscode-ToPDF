@@ -5,26 +5,51 @@ let vscode = require('vscode');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
+	// The command has been defined in the package.json file
+	// Now provide the implementation of the command with  registerCommand
+	// The commandId parameter must match the command field in package.json
+	let disposable = vscode.commands.registerCommand('toPDF.hello', function () {
+		// The code you place here will be executed every time your command is executed
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vscode-topdf" is now active!');
+		// Display a message box to the user
+		vscode.window.showInformationMessage('hello from toPDF!');
+	});
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', function () {
-        // The code you place here will be executed every time your command is executed
+	let convert = vscode.commands.registerCommand('toPDF.convert', function () {
+		let docType = vscode.window.activeTextEditor;
+		let langId = docType.document.languageId;
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
-    });
+		switch (langId) {
+			case 'plaintext':
+				break;
+			case 'html':
+				break;
+			case 'css':
+				break;
+			case 'javascript':
+				break;
+			case 'javascript':
+				break;
 
-    context.subscriptions.push(disposable);
+			default:
+				break;
+		}
+
+		vscode.window.showInformationMessage(langId);
+	});
+
+	let barItem = vscode.window.createStatusBarItem('right', 100);
+	barItem.text = "$(file-pdf)";
+	barItem.tooltip = "convert to pdf";
+	barItem.command = "toPDF.convert";
+	barItem.show();
+
+	context.subscriptions.push(disposable);
+	context.subscriptions.push(convert);
+	context.subscriptions.push(barItem);
 }
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {
-}
+function deactivate() {}
 exports.deactivate = deactivate;
